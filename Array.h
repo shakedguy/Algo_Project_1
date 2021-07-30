@@ -3,6 +3,7 @@
 #include <iostream>
 using namespace std;
 
+typedef unsigned long long ulong;
 
 template <class T, unsigned long long SIZE = 0>
 class Array
@@ -10,11 +11,58 @@ class Array
     unsigned long long size;
     T* arr;
 
-    
+    class iterator
+    {
+        const Array* data;
+        unsigned long long index;
+        friend class Array;
+    public:
+        iterator(const Array* arr, int size) : data(arr), index(size) { }
+        const T& operator*() const
+        {
+            return data->arr[index];
+        }
+        iterator operator++(int)
+        {
+            iterator temp = *this;
+            ++* this;
+            return temp;
+        }
+        iterator& operator++()
+        {
+            ++index;
+            return *this;
+        }
+        iterator& operator=(const T& item)
+        {
+            data->arr[index] = item;
+            return *this;
+        }
+        friend bool operator==(const iterator& rhs, const iterator& lhs)
+        {
+            return !(rhs.index != lhs.index);
+        }
+        friend bool operator!=(const iterator& rhs, const iterator& lhs)
+        {
+            return !(rhs.index == lhs.index);
+        }
+
+        const unsigned long long Index()const { return index; }
+    };
+
 public:
-    class mException { };
-    Array(int _size = SIZE)try : size(_size), arr(new T[size]) {}
-    catch (bad_alloc& e) { e.what(); throw; }
+    class mException
+    {
+    public:
+        static void badAloc() { std::cout << "Allocation error!"; }
+        static void outOfRange() { std::cout << "Out of range error!"; }
+    };
+    Array(const T& initialize = 0)try : size(SIZE), arr(new T[size])
+    {
+        for (int i = 0; i < size; ++i)
+            arr[i] = initialize;
+    }
+    catch (mException& e) { e.badAloc(); throw; }
     Array(const Array& rhs) :arr(new T[rhs.size]), size(rhs.size)
     {
         for (int i = 0; i < size; ++i)
@@ -22,11 +70,22 @@ public:
             arr[i] = rhs.arr[i];
         }
     }
+	Array(T* rhs, const ulong& _size): size(_size),arr(new T[size])
+    {
+        for (int i = 0; i < size; ++i)
+            arr[i] = rhs[i];
+    }
+    Array& operator=(T* rhs)
+    {
+        for (int i = 0; i < size; ++i)
+            arr[i] = rhs[i];
+        return *this;
+    }
     Array& operator=(const Array& rhs)
     {
-        if (this == &rhs) 
+        if (this == &rhs)
             return *this;
-    
+
         delete[] arr;
         size = rhs.size;
         arr = new T[size];
@@ -41,7 +100,7 @@ public:
         if (index < 0 || index >= size) throw mException();
         return arr[index];
     }
-    const unsigned long long& operator[](const T& item)
+    const unsigned long long& at(const T& item)
     {
         for (auto i = 0; i < size; ++i)
             if (arr[i] == item)
@@ -53,7 +112,7 @@ public:
         if (index < 0 || index >= size) throw mException();
         return arr[index];
     }
-    const Array operator++(int) //postfix
+    Array operator++(int) //postfix
     {
         Array temp = *this;
         ++* this;
@@ -107,54 +166,12 @@ public:
     {
         return arr[size - 1];
     }
-    static class iterator
-    {
-        const Array* data;
-        unsigned long long index;
-        friend class Array;
-    public:
-        iterator(const Array* arr, int size) : data(arr), index(size) { }
-        const T& operator*() const
-        {
-            return data->arr[index];
-        }
-        iterator operator++(int)
-        {
-            iterator temp = *this;
-            ++* this;
-            return temp;
-        }
-        iterator& operator++()
-        {
-            ++index;
-            return *this;
-        }
-        iterator& operator=(const T& item)
-        {
-            data->arr[index] = item;
-            return *this;
-        }
-        friend bool operator==(const iterator& rhs, const iterator& lhs)
-        {
-            return !(rhs.index != lhs.index);
-        }
-        friend bool operator!=(const iterator& rhs, const iterator& lhs)
-        {
-            return !(rhs.index == lhs.index);
-        }
-    	
-        const unsigned long long Index()const { return index; }
-    };
+
     iterator begin() const { return iterator(this, 0); }
     iterator end() const { return iterator(this, size); }
     iterator at(unsigned long long i) const { return iterator(this, i); }
-	//const unsigned long long& Index(const char& c)const
- //   {
- //       for (auto i = 0; i < size; ++i)
- //           if (arr[i] == c)
- //               return i;
- //       return -1;
- //   }
+	
+
 };
 
 #endif

@@ -5,15 +5,13 @@
 	Main file - Tetris game
 
 ***************************************/
+#include <iostream>
 #include "Array.h"
-
+#include "List.h"
+using namespace std;
 
 int main() {
 
-	Array<int, 5> arr;
-	
-	cin >> arr;
+	Array<int, 5>arr(1);
 	cout << arr;
-
-
 }
