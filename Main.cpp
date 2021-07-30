@@ -12,7 +12,7 @@ int main() {
 
 	Array<int, 5> arr;
 	
-	//cin >> arr;
+	cin >> arr;
 	cout << arr;
 
 
