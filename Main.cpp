@@ -8,17 +8,17 @@
 #include <iostream>
 #include "Array.h"
 #include "List.h"
-using namespace std;
+#include "Node.h"
+
+using namespace Containers;
 
 int main()
 {
-	
 	List<int> lst;
 	lst.PushBack(1);
 	lst.PushBack(2);
 	lst.PushBack(3);
 	lst.PushBack(4);
-	lst.PushBack(5);
-	Array<int, 5> arr = lst;
-	cout << arr;
+	cout << lst;
+	
 }
