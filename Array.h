@@ -1,6 +1,7 @@
 #ifndef _ARRAY_H_
 #define _ARRAY_H_
 #include <iostream>
+#include "List.h"
 using namespace std;
 
 typedef unsigned long long ulong;
@@ -8,17 +9,17 @@ typedef unsigned long long ulong;
 template <class T, unsigned long long SIZE = 0>
 class Array
 {
-    unsigned long long size;
-    T* arr;
+    ulong size;
+    T* arr = nullptr;
 
     class iterator
     {
         const Array* data;
-        unsigned long long index;
+        ulong index;
         friend class Array;
     public:
-        iterator(const Array* arr, int size) : data(arr), index(size) { }
-        const T& operator*() const
+        iterator(const Array* arr, ulong size) : data(arr), index(size) { }
+        T& operator*() const
         {
             return data->arr[index];
         }
@@ -46,10 +47,13 @@ class Array
         {
             return !(rhs.index == lhs.index);
         }
-
-        const unsigned long long Index()const { return index; }
     };
-
+    void swap(T& t1, T& t2)
+    {
+	    T tmp(t1);
+    	t1 = t2;
+    	t2 = tmp;
+    }
 public:
     class mException
     {
@@ -70,16 +74,30 @@ public:
             arr[i] = rhs.arr[i];
         }
     }
-	Array(T* rhs, const ulong& _size): size(_size),arr(new T[size])
+    Array(T rhs[]) : size(SIZE), arr(new T[size])
     {
-        for (int i = 0; i < size; ++i)
-            arr[i] = rhs[i];
+      for(int i = 0; i < size; ++i)
+          arr[i] = rhs[i];
     }
-    Array& operator=(T* rhs)
+    Array(const List<T>& lst) :size(SIZE), arr(new T[size])
+    {
+      *this = lst;
+    }
+    Array& operator=(T rhs[])
     {
         for (int i = 0; i < size; ++i)
             arr[i] = rhs[i];
         return *this;
+    }
+    Array& operator=(const List<T>& lst)
+    {
+      auto cur = lst.head->next;
+      for(int i = 0; i < size; ++i)
+      {
+	      arr[i] = cur->data;
+        cur = cur->next;
+      }
+      return *this;
     }
     Array& operator=(const Array& rhs)
     {
@@ -95,7 +113,7 @@ public:
         }
         return *this;
     }
-    T& operator[](int index) throw (mException)
+    T& operator[](int index)
     {
         if (index < 0 || index >= size) throw mException();
         return arr[index];
@@ -107,7 +125,7 @@ public:
                 return i;
         return -1;
     }
-    const T& operator[](int index) const throw(mException)
+    const T& operator[](int index) const
     {
         if (index < 0 || index >= size) throw mException();
         return arr[index];
