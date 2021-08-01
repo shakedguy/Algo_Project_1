@@ -1,14 +1,15 @@
 #ifndef _LIST_H_
 #define _LIST_H_
 #include <iostream>
-#include "Node.h";
+
+#include "Node.h"
 
 using ulong = unsigned long long;
 using namespace std;
 
 namespace Containers
 {
-	template<class T>
+	template<typename T>
 	class List
 	{
 
@@ -101,10 +102,10 @@ namespace Containers
 		Node<T>* head = nullptr;
 		Node<T>* tail = nullptr;
 
-		List()
+		List(const ulong& _size = 0) :size(_size)
 		{
-			head = new Node<T>();
-			tail = new Node<T>();
+			head = new Node<T>;
+			tail = new Node<T>;
 			head->next = tail;
 			tail->prev = head;
 		}
