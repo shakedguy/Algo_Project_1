@@ -256,6 +256,11 @@ namespace Containers
 		Iterator at(ulong i) const {
 			return Iterator((*this)[i]);
 		}
+
+		void zizi()
+		{
+			cout << "hello";
+		}
 	};
 	
 }
