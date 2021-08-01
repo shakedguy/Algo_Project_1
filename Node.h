@@ -6,7 +6,7 @@ using namespace std;
 namespace Containers
 {
 
-	template<class T>
+	template<typename T>
 	struct Node
 	{
 		T data;
