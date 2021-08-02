@@ -1,8 +1,9 @@
 #ifndef _LIST_H_
 #define _LIST_H_
 #include <iostream>
-
+#include "Vertex.h"
 #include "Node.h"
+//#include "Vertex.h"
 
 using ulong = unsigned long long;
 using namespace std;
@@ -221,7 +222,7 @@ using namespace std;
 		friend ostream& operator<<(ostream& out, const List& lst)
 		{
 			Node<T>* cur = lst.head->next;
-			out << "[";
+			out << "{";
 			for(ulong i = 0; i < lst.size; ++i)
 			{
 				out << (*cur);
@@ -229,7 +230,7 @@ using namespace std;
 				if(i < lst.size - 1)
 					out << ", ";
 			}
-			out << "]" << endl;
+			out << "}" << endl;
 			return out;
 		}
 		T& front()
@@ -255,11 +256,17 @@ using namespace std;
 		Iterator at(ulong i) const {
 			return Iterator((*this)[i]);
 		}
-
-		void zizi()
+		
+		bool IsPresent(const Vertex& v)
 		{
-			cout << "hello";
+			for (Vertex& element : (*this))
+			{
+				if(v == element)
+					return true;
+			}
+			return false;
 		}
+
 	};
 
 #endif

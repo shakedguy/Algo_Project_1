@@ -1,12 +1,13 @@
 #ifndef _NODE_H_
 #define _NODE_H_
 #include <iostream>
+
 using namespace std;
 
-namespace Containers
-{
+//namespace Containers
+//{
 
-	template<typename T>
+	template<typename T=int>
 	struct Node
 	{
 		T data;
@@ -58,7 +59,7 @@ namespace Containers
 			return out;
 		}
 	};
-}
+//}
 #endif
 
 

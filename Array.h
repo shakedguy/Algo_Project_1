@@ -2,24 +2,26 @@
 #define _ARRAY_H_
 #include <iostream>
 #include "List.h"
+#include "Pair.h"
+
 using namespace std;
 
 typedef unsigned long long ulong;
 
 
-	template <class T, unsigned long long SIZE = 0>
+	template <class T, int SIZE = 0>
 class Array
 	{
-		ulong size;
+		int size;
 		T* arr = nullptr;
 
 		class iterator
 		{
 			const Array* data;
-			ulong index;
+			int index;
 			friend class Array;
 		public:
-			iterator(const Array* arr, ulong size) : data(arr), index(size) { }
+			iterator(const Array* arr, int size) : data(arr), index(size) { }
 			T& operator*() const
 			{
 				return data->arr[index];
@@ -66,10 +68,22 @@ class Array
 				std::cout << "Out of range error!";
 			}
 		};
-		
-		Array(const T& initialize = 0)try : size(SIZE), arr(new T[size])
+		Array()try:size(SIZE),arr(new T[size]){}
+		catch (mException& e)
 		{
-			for(int i = 0; i < size; ++i)
+			e.badAloc();
+			throw;
+		}
+
+		Array(ulong _size)try : size(_size), arr(new T[size]){}
+		catch(mException& e)
+		{
+			e.badAloc(); throw;
+		}
+		
+		Array(T initialize)try : size(SIZE), arr(new T[size])
+		{
+			for(ulong i = 0; i < size; ++i)
 				arr[i] = initialize;
 		}
 		catch(mException& e)
@@ -150,18 +164,20 @@ class Array
 			if(index < 0 || index >= size) throw mException();
 			return arr[index];
 		}
-		const unsigned long long& at(const T& item)
+		T& at(const T& item)
 		{
-			for(auto i = 0; i < size; ++i)
-				if(arr[i] == item)
-					return i;
-			return -1;
+			//for(auto i = 0; i < size; ++i)
+			//	if(arr[i] == item)
+			//		return arr[i];
+			//return Pair<T, T>(nullptr,nullptr);
 		}
-		const T& operator[](int index) const
+		
+		const T& operator[](ulong index) const
 		{
 			if(index < 0 || index >= size) throw mException();
 			return arr[index];
 		}
+
 		Array operator++(int) //postfix
 		{
 			Array temp = *this;

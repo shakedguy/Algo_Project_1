@@ -14,6 +14,10 @@ public:
 	G second;
 
 	Pair(T _first = NULL, G _second = NULL) : first(_first), second(_second) {}
+	Pair(int x) :first(x), second(x) {}
+	bool operator==(const Pair& p) {
+		return (first == p.first);
+	}
 
 	
 };

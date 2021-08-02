@@ -5,8 +5,8 @@
 
 class Edge
 {
-	Vertex u = NULL;
-	Vertex v = NULL;
+	//Vertex u = NULL;
+	//Vertex v = NULL;
 	
 };
 
