@@ -2,25 +2,26 @@
 #define _ARRAY_H_
 #include <iostream>
 #include "List.h"
+#include "Pair.h"
+
 using namespace std;
 
 typedef unsigned long long ulong;
 
-namespace Containers
-{
-	template <class T, unsigned long long SIZE = 0>
+
+	template <class T, int SIZE = 0>
 class Array
 	{
-		ulong size;
+		int size;
 		T* arr = nullptr;
 
 		class iterator
 		{
 			const Array* data;
-			ulong index;
+			int index;
 			friend class Array;
 		public:
-			iterator(const Array* arr, ulong size) : data(arr), index(size) { }
+			iterator(const Array* arr, int size) : data(arr), index(size) { }
 			T& operator*() const
 			{
 				return data->arr[index];
@@ -67,15 +68,29 @@ class Array
 				std::cout << "Out of range error!";
 			}
 		};
-		Array(const T& initialize = 0)try : size(SIZE), arr(new T[size])
+		Array()try:size(SIZE),arr(new T[size]){}
+		catch (mException& e)
 		{
-			for(int i = 0; i < size; ++i)
+			e.badAloc();
+			throw;
+		}
+
+		Array(ulong _size)try : size(_size), arr(new T[size]){}
+		catch(mException& e)
+		{
+			e.badAloc(); throw;
+		}
+		
+		Array(T initialize)try : size(SIZE), arr(new T[size])
+		{
+			for(ulong i = 0; i < size; ++i)
 				arr[i] = initialize;
 		}
 		catch(mException& e)
 		{
 			e.badAloc(); throw;
 		}
+		
 		Array(const Array& rhs) :arr(new T[rhs.size]), size(rhs.size)
 		{
 			for(int i = 0; i < size; ++i)
@@ -83,16 +98,34 @@ class Array
 				arr[i] = rhs.arr[i];
 			}
 		}
+		
 		Array(T rhs[]) : size(SIZE), arr(new T[size])
 		{
 			for(int i = 0; i < size; ++i)
 				arr[i] = rhs[i];
 		}
+		
 		Array(const List<T>& lst) :size(SIZE), arr(new T[size])
 		{
 			*this = lst;
 		}
+
+		~Array() { delete[]arr; }
+		
 		const ulong& Size()const { return size; }
+		
+		void Resize(ulong _size)
+		{
+			
+			T* temp = new T[_size];
+			for (ulong i=0; i<size;++i)
+			{
+				temp[i] = arr[i];
+			}
+			size = _size;
+			arr = temp;
+			delete[]temp;
+		}
 		Array& operator=(T rhs[])
 		{
 			for(int i = 0; i < size; ++i)
@@ -102,6 +135,9 @@ class Array
 		Array& operator=(const List<T>& lst)
 		{
 			auto cur = lst.head->next;
+			delete[]arr;
+			arr = new T[lst.size];
+			size = lst.size;
 			for(int i = 0; i < size; ++i)
 			{
 				arr[i] = cur->data;
@@ -117,29 +153,31 @@ class Array
 			delete[] arr;
 			size = rhs.size;
 			arr = new T[size];
-			for(int i = 0; i < size; i++)
+			for(ulong i = 0; i < size; i++)
 			{
 				arr[i] = rhs.arr[i];
 			}
 			return *this;
 		}
-		T& operator[](int index)
+		T& operator[](ulong index)
 		{
 			if(index < 0 || index >= size) throw mException();
 			return arr[index];
 		}
-		const unsigned long long& at(const T& item)
+		T& at(const T& item)
 		{
-			for(auto i = 0; i < size; ++i)
-				if(arr[i] == item)
-					return i;
-			return -1;
+			//for(auto i = 0; i < size; ++i)
+			//	if(arr[i] == item)
+			//		return arr[i];
+			//return Pair<T, T>(nullptr,nullptr);
 		}
-		const T& operator[](int index) const
+		
+		const T& operator[](ulong index) const
 		{
 			if(index < 0 || index >= size) throw mException();
 			return arr[index];
 		}
+
 		Array operator++(int) //postfix
 		{
 			Array temp = *this;
@@ -180,11 +218,6 @@ class Array
 			return in;
 		}
 
-		~Array()
-		{
-			delete[] arr;
-		}
-
 		T front()
 		{
 			return arr[0];
@@ -223,7 +256,6 @@ class Array
 		}
 
 	};
-}
 #endif
 
 
