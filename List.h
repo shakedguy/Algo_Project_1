@@ -7,8 +7,7 @@
 using ulong = unsigned long long;
 using namespace std;
 
-namespace Containers
-{
+
 	template<typename T>
 	class List
 	{
@@ -262,7 +261,5 @@ namespace Containers
 			cout << "hello";
 		}
 	};
-	
-}
 
 #endif
