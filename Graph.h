@@ -37,17 +37,20 @@ public:
 	//void RemoveEdge(int u, int v){}
 	//void ReadGraph(){}
 	//void PrintGraph(){}
-	//int IsEmpty(){}
-	int AddEdge(Vertex u, Vertex v);
+	int IsEmpty() { return (size) ? 1 : 0; }
+	int AddEdge(Vertex u, Vertex v)const;
 	friend ostream& operator<<(ostream& out, const Graph& v)
 	{
-		for (auto& element : v.G)
+		for (auto& item : v.G)
 		{
-			out << "[" << element.first << "] -> " << element.second;
+			out << "[" << item.first << "] -> " << item.second;
 		}
+		out << endl;
 		return out;
 	}
-	//List<int> Adj(int i){}
+	List<Vertex>& operator[](const Vertex& u)const;
+	bool Exist(const Vertex& u)const;
+	List<Vertex> Adj(Vertex i) { return (*this)[i]; }
 	
 	
 };

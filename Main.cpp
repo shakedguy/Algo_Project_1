@@ -44,6 +44,6 @@ int main()
 	G.AddEdge(v10, v1);
 	G.AddEdge(v10, v2);
 	G.AddEdge(v10, v4);
-	cout << G;
+	cout << G << G.Adj(v10);
 	
 }

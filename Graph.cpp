@@ -26,31 +26,41 @@ bool Graph::IsAdjacent(const Vertex& u, const Vertex& v)
 	return false;
 }
 
-int Graph::AddEdge(Vertex u, Vertex v)
+int Graph::AddEdge(Vertex u, Vertex v)const
 {
-	bool flag1, flag2;
-	flag1 = flag2 = false;
-	for(auto& element : G)
+	bool flag = false;
+	if((this->Exist(v) && this->Exist(u)) && 
+		(!(*this)[u].IsPresent(v)) && !(*this)[v].IsPresent(u))
 	{
-		if(element.first == u)
-		{
-			if(!element.second.IsPresent(v))
-			{
-				element.second.PushBack(v);
-				flag1 = true;
-			}
-		}
-		else if(element.first == v)
-		{
-			if(!element.second.IsPresent(u))
-			{
-				element.second.PushBack(u);
-				flag2 = true;
-			}
-		}
+		(*this)[u].PushBack(v);
+		(*this)[v].PushBack(u);
+		flag = true;
 	}
-	return (flag1 && flag2) ? 1 : 0;
+	return (flag) ? 1 : 0;
+
 }
+
+List<Vertex>& Graph::operator[](const Vertex& u)const
+{
+	for (auto& item : G)
+	{
+		if(item.first == u)
+			return item.second;
+	}
+}
+
+bool Graph::Exist(const Vertex& u)const
+{
+	for(auto& item : G)
+	{
+		if(item.first == u)
+			return true;
+	}
+	return false;
+}
+
+
+
 
 
 
