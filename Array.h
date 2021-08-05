@@ -116,15 +116,8 @@ class Array
 		
 		void Resize(ulong _size)
 		{
-			
-			T* temp = new T[_size];
-			for (ulong i=0; i<size;++i)
-			{
-				temp[i] = arr[i];
-			}
 			size = _size;
-			arr = temp;
-			delete[]temp;
+			arr = new T[size];
 		}
 		Array& operator=(T rhs[])
 		{

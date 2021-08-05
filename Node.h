@@ -53,6 +53,14 @@ using namespace std;
 		Node& operator*() {
 			return *this;
 		}
+		bool operator==(const Node& node)
+		{
+			return (data == node.data && prev == node.prev && next == node.next);
+		}
+		bool operator==(const Node* node) { return (this->operator==(*node)); }
+		bool operator!=(const Node* node) { return (!this->operator==(*node)); }
+		bool operator!=(const Node& node) { return (!operator==(node)); }
+
 		friend ostream& operator<<(ostream& out, const Node& node)
 		{
 			out << node.data;

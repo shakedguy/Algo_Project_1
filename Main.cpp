@@ -7,43 +7,57 @@
 ***************************************/
 
 #include <iostream>
-
+#include <stdio.h>
 
 #include "Array.h"
 #include "List.h"
 #include "Vertex.h"
 #include "Graph.h"
+#include "Queue.h"
 #include "Node.h"
 
 using namespace std;
 
-int main()
-{
-	Vertex v1(0, nullptr, 1);
-	Vertex v2(1, nullptr, 1);
-	Vertex v3(2, nullptr, 1);
-	Vertex v4(3, nullptr, 1);
-	Vertex v5(4, nullptr, 1);
-	Vertex v6(5, nullptr, 1);
-	Vertex v7(6, nullptr, 1);
-	Vertex v8(7, nullptr, 1);
-	Vertex v9(8, nullptr, 1);
-	Vertex v10(9, nullptr, 1);
 
-	Graph G(10);
-	G.AddEdge(v1, v4);
-	G.AddEdge(v3, v2);
-	G.AddEdge(v2, v5);
-	G.AddEdge(v6, v10);
-	G.AddEdge(v7, v2);
-	G.AddEdge(v8, v3);
-	G.AddEdge(v9, v3);
-	G.AddEdge(v1, v6);
-	G.AddEdge(v10, v7);
-	G.AddEdge(v10, v5);
-	G.AddEdge(v10, v1);
-	G.AddEdge(v10, v2);
-	G.AddEdge(v10, v4);
-	cout << G << G.Adj(v10);
+void ShortestRoutesTree(const Graph& G)
+{
+
 	
+}
+
+int main()
+{	
+	Graph G;
+	int size;
+	cin >> size;
+	if(size < 0)
+		cout << "Invalid input" << endl;
+	else if(size == 0)
+		cout << "Empty Graph" << endl;
+	else
+	{
+		G.MakeEmptyGraph(size);
+		Vertex s, t, first, second;
+		cin >> s.data;
+		cin >> t.data;
+		while(!cin.eof())
+		{
+			if(second.data != 0)
+			{
+				G.AddEdge(first, second);
+				first.data = second.data = 0;
+			}
+			else
+			{
+				if(first.data == 0)
+					cin >> first.data;
+				else if(second.data == 0)
+					cin >> second.data;
+			}
+		}
+		if(first.data != 0 || second.data != 0)
+			cout << "Invalid input" << endl;
+		else
+			G.BFS(s);
+	}
 }

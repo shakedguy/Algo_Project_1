@@ -5,7 +5,7 @@
 #include "Node.h"
 //#include "Vertex.h"
 
-using ulong = unsigned long long;
+typedef unsigned long long ulong;
 using namespace std;
 
 
@@ -221,16 +221,23 @@ using namespace std;
 
 		friend ostream& operator<<(ostream& out, const List& lst)
 		{
-			Node<T>* cur = lst.head->next;
-			out << "{";
-			for(ulong i = 0; i < lst.size; ++i)
+			if(lst.size)
 			{
-				out << (*cur);
-				cur = cur->next;
-				if(i < lst.size - 1)
-					out << ", ";
+				Node<T>* cur = lst.head->next;
+				out << "{";
+				for(ulong i = 0; i < lst.size; ++i)
+				{
+					out << (*cur);
+					cur = cur->next;
+					if(i < lst.size - 1)
+						out << ", ";
+					if(i != 0 && (i % 10 == 0))
+						cout << endl << "        ";	
+				}
+				out << "}" << endl;
 			}
-			out << "}" << endl;
+			else
+				out << "{}" << endl;
 			return out;
 		}
 		T& front()
